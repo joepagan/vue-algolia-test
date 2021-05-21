@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Parcel Sandbox</title>
+    <meta charset="UTF-8" />
+  </head>
+
+  <body>
+    <div
+      class="c-search-results js-search-results"
+      data-app="app"
+      data-key="key"
+    >
+      <ais-instant-search
+        :search-client="searchClient"
+        index-name="index_name"
+      >
+        <ais-configure
+          :hits-per-page.camel="10"
+          query="apple"
+        />
+
+        <ais-stats>
+          <p
+            slot-scope="{ hitsPerPage, nbPages, nbHits, page, processingTimeMS, query }"
+            v-if="nbHits > hitsPerPage"
+          >
+            Page ${getFirstVisibleResultIndex(page, hitsPerPage)} - ${getLastVisibleResultIndex(page, hitsPerPage, nbHits)} of ${nbHits}
+          </p>
+          <div v-else></div>
+        </ais-stats>
+
+        <ais-hits>
+          <ul slot-scope="{ items, query }" v-if="items.length > 0">
+            <li v-for="item in items" :key="item.objectID">
+              <a :href="'/' + item.uri">${item.title}</a>
+              <p v-if="item.content">
+                ${truncateString(item.content, 150)}
+              </p>
+              <p v-else-if="item.pageBannerIntroText">
+                ${truncateString(item.pageBannerIntroText, 150)}
+              </p>
+              <p v-else-if="item.personBio">
+                ${truncateString(item.personBio, 150)}
+              </p>
+            </li>
+          </ul>
+          <div v-else>
+            No results have been found for "{{ searchQuery }}".
+          </div>
+        </ais-hits>
+
+        <ais-pagination
+          v-on:page-change="onPageChange"
+        >
+          <ul
+            slot-scope="{
+              currentRefinement,
+              nbPages,
+              pages,
+              isFirstPage,
+              isLastPage,
+              refine,
+              createURL
+            }"
+            v-if="pages.length > 1"
+          >
+            <li
+              v-for="page in pages"
+              v-bind:class="{ 'ais-Pagination-item--selected': page === currentRefinement }"
+              :key="page"
+            >
+              <a
+                :href="createURL(page)"
+                @click.prevent="refine(page)"
+              >
+                ${page + 1}
+              </a>
+            </li>
+            <li v-if="!isLastPage">
+              <a
+                :href="createURL(currentRefinement + 1)"
+                @click.prevent="refine(currentRefinement + 1)"
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" width="24.028" height="23.803" viewBox="0 0 24.028 23.803">
+                  <g data-name="Group 212" transform="translate(-194.5 -2204.598)">
+                    <path data-name="Path 833" d="M0,6.051V0H6.107" transform="translate(217.821 2216.48) rotate(135)" fill="none" stroke="#7c838e" stroke-width="1"/>
+                    <path data-name="Path 834" d="M0,0,16.124,16.124" transform="translate(217.803 2216.5) rotate(135)" fill="none" stroke="#7c838e" stroke-width="1"/>
+                  </g>
+                </svg>
+
+
+              </a>
+            </li>
+          </ul>
+          <div v-else></div>
+        </ais-pagination>
+      </ais-instant-search>
+    </div>
+
+    <script src="src/index.js"></script>
+  </body>
+</html>

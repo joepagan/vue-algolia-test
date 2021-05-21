@@ -1,0 +1,25 @@
+{
+  "name": "vanilla",
+  "version": "1.0.0",
+  "description": "JavaScript example starter project",
+  "main": "index.html",
+  "scripts": {
+    "start": "parcel index.html --open",
+    "build": "parcel build index.html"
+  },
+  "dependencies": {
+    "algoliasearch": "4.9.1",
+    "core-js": "^2.6.12",
+    "parcel-bundler": "^1.6.1",
+    "regenerator-runtime": "^0.13.7",
+    "vue": "2.6.12",
+    "vue-instantsearch": "3.7.0"
+  },
+  "resolutions": {
+    "@babel/preset-env": "7.13.8"
+  },
+  "keywords": [
+    "javascript",
+    "starter"
+  ]
+}
